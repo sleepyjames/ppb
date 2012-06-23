@@ -1,0 +1,5 @@
+if [ $WORKING == "1" ]; then
+	export PATH=$OLDPATH
+fi
+
+export WORKING=0

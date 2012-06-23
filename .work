@@ -1,0 +1,6 @@
+if [ -n ${WORKING-1} ]; then
+	export OLDPATH=$PATH;
+	export PATH=/Users/potato/work/google_appengine:$PATH;
+fi
+
+export WORKING=1
