@@ -1,12 +1,45 @@
-<!doctype html>
+{% extends 'base.html' %}
 
-<html>
+{% block title %}PPB home{% endblock %}
 
-	<head>
-		<title>PPB home</title>
-	</head>
+{% block content %}
+	<h1>PPB</h1>
+	{% if not user %}
+		<p><a href="{{ login_url }}">Login</a> with your potatolondon account to use PPB</p>
+	{% else %}
+		<p>Hello {{ user.email }}. <a href="{{ logout_url }}">Logout</a></p>
+		<p><a href="{% url snippets:new-snippet %}">Create a new snippet</a></p>
+	{% endif %}
 
-	<body>
-		<h1>Hello</h1>
-	</body>
-</html>
+	<form action="{% url snippets:home %}" method="get">
+		<input type="text" name="q" placeholder="Type a thing" value="{{ q }}"/>
+		<input type="submit" value="search snippets" />
+	</form>
+	{% if latest_snippets %}
+		<h2>Latest snippets</h2>
+
+		<ul>
+			{% for s in latest_snippets %}
+			<li><a href="{{ s.get_absolute_url }}">{{ s.title }}</a> in {{ s.get_language }}
+				by {{ s.creator.email }} on {{ s.created }}</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<h2>There are no latest snippets</h2>
+	{% endif %}
+
+	{% if q %}
+		{% if results %}
+	<h2>{{ results_count|default:0 }} Results for {{ q }}</h2>
+	<ul>
+		{% for r in results %}
+		<li>{{ r.title }} in {{ r.language_readable }}
+			by {{ r.creator_email }}</li>
+		{% endfor %}
+	<ul>
+		{% else %}
+	<h2>There are no results for {{ q }}</h2>
+		{% endif %}
+	{% endif %}
+
+{% endblock %}
