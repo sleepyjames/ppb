@@ -13,8 +13,8 @@ inbound_services:
 
 handlers:
 
-- url: /static
-  static_dir: core/static
+- url: /static/(.*)
+  static_dir: \1/static
   expiration: '1m'
 
 - url: /.*

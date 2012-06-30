@@ -1,5 +1,5 @@
 from distutils.core import setup
 
-setup(name='Comics',
+setup(name='ppb',
       version='1.0',
      )
