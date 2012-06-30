@@ -140,6 +140,16 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    'snippets.context_processors.put_user_in_context'
+)
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -193,3 +203,22 @@ LOGGING = {
         },
     }
 }
+
+
+# Site specific stuff
+
+# Programming languages that a snippet can be of
+PROGRAMMING_LANGUAGE_CHOICES = {
+    1: None,
+    2: 'python',
+    3: 'js',
+    4: 'java',
+}
+
+# A map for the reverse lookup
+REVERSE_PROGRAMMING_LANGUAGE_CHOICES = dict(
+    zip(
+        PROGRAMMING_LANGUAGE_CHOICES.values(),
+        PROGRAMMING_LANGUAGE_CHOICES.keys()
+    )
+)
