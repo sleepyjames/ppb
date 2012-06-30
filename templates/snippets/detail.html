@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}PPB snippet: {{ snippet.title }}{% endblock %}
+
+{% block content %}
+	<h1>{{ snippet.title }}</h1>
+
+	<pre>
+	{{ snippet.code }}
+	</pre>
+
+	<p>A snippet of {{ snippet.get_language }} by {{ snippet.creator.email }}</p>
+{% endblock %}

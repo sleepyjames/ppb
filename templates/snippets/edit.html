@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}PPB add/edit snippet{% endblock %}
+
+{% block content %}
+	<h1>Create snippet</h1>
+
+	<form action="{{ form_action }}" method="post">
+		{% csrf_token %}
+		<ul>
+			{{ form.as_ul }}
+		</ul>
+		<input type="submit" value="create">
+	</form>
+{% endblock %}
