@@ -8,7 +8,7 @@ class CodeSnippetDocument(DocumentModel):
     "A search document describing a code snippet"
     title = TextField()
     code = TextField()
-    language_id = IntegerField()
+    language_id = IntegerField(default=0)
     language_readable = TextField()
     creator_email = TextField()
 
