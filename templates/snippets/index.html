@@ -34,7 +34,7 @@
 	<ul>
 		{% for r in results %}
 		<li>{{ r.title }} in {{ r.language_readable }}
-			by {{ r.creator_email }}</li>
+			by {{ r.creator_email }} on {{ r.created }}</li>
 		{% endfor %}
 	<ul>
 		{% else %}
