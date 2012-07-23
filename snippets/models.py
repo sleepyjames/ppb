@@ -1,4 +1,5 @@
 from google.appengine.ext import db
+from google.appengine.api import users
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -31,11 +32,45 @@ class User(db.Model):
             self.gaia_id = key_name
         super(User, self).__init__(**kwargs)
 
+    @classmethod
+    def get_current(cls):
+        "Get the current user based on the current users API GAIA account"
+        # TODO: extend to use request.session, it'll be much faster
+        user = users.get_current_user()
+        if not user:
+            return user
+
+        id = str(user.user_id())
+        email = user.email()
+
+        # If we don't have a user in the database for this person, create
+        # them now
+        db_user = cls.get_by_key_name(id)
+        if db_user is None:
+            db_user = cls(key_name=id, email=email)
+            db_user.put()
+        return db_user
+
 
 class Base(db.Model):
-    "Takes care of created and modified timestamps"
+    "Takes care of created and modified timestamps and some handy methods"
     created = db.DateTimeProperty(auto_now_add=True)
     modified = db.DateTimeProperty(auto_now=True)
+
+    @classmethod
+    def get_or_create(cls, key_name_or_id, use_key=True):
+        """Get or create an instance of this model class. If `use_key` is `True`
+        then the model instance will be created with the given key as its
+        `key_name`, otherwise it'll get a datastore-assigned id.
+        """
+        inst = cls.get(db.Key.from_path(cls, key_name_or_id))
+
+        if inst is None:
+            if use_key:
+                inst = cls(key_name=key_name_or_id)
+            else:
+                inst = cls()
+        return inst
 
 
 class CodeSnippet(Base):
@@ -64,6 +99,10 @@ class CodeSnippet(Base):
         if self.is_saved():
             kwargs = {'snippet_id': self.key().id()}
             return reverse('snippets:snippet-detail', kwargs=kwargs)
+
+    @property
+    def comments(self):
+        return Comment.all().filter('code_snippet =', self)
 
 
 class Comment(Base):
