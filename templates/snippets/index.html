@@ -3,7 +3,6 @@
 {% block title %}PPB home{% endblock %}
 
 {% block content %}
-	<h1>PPB</h1>
 	{% if not user %}
 		<p><a href="{{ login_url }}">Login</a> with your potatolondon account to use PPB</p>
 	{% else %}
@@ -28,7 +27,7 @@
 		<h2>There are no latest snippets</h2>
 	{% endif %}
 
-	{% if q %}
+	{% if q or filters %}
 		{% if results %}
 	<h2>{{ results_count|default:0 }} Results for {{ q }}</h2>
 	<ul>
