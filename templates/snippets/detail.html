@@ -3,7 +3,8 @@
 {% block title %}PPB snippet: {{ snippet.title }}{% endblock %}
 
 {% block content %}
-	<h1>{{ snippet.title }}</h1>
+	<h2>{{ snippet.title }}</h2>
+	<p><a href="{% url snippets:edit-snippet snippet_id=snippet.key.id %}">edit</a></p>
 
 	<pre>
 	{{ snippet.code }}
