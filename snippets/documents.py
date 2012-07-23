@@ -18,7 +18,7 @@ class CodeSnippetDocument(DocumentModel):
     modified = DateField()
 
 
-    def absolute_url(self):
+    def get_absolute_url(self):
         """Bit of redundancy here since this is also on
         `snippets.models.CodeSnippet` so that could just be parameterised to
         take kwargs or something.
