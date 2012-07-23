@@ -8,6 +8,10 @@
 
 	<body>
 		<div id="content">
+			{% block header %}
+				<h1><a href="{% url snippets:home %}">PPB</a></h1>
+			{% endblock %}
+
 			{% block content %}{% endblock %}
 		</div>
 	</body>
