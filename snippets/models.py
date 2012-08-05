@@ -100,10 +100,6 @@ class CodeSnippet(Base):
             kwargs = {'snippet_id': self.key().id()}
             return reverse('snippets:snippet-detail', kwargs=kwargs)
 
-    @property
-    def comments(self):
-        return Comment.all().filter('code_snippet =', self)
-
 
 class Comment(Base):
     "A comment on a code snippet"
