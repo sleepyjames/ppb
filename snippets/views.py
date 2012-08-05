@@ -57,7 +57,7 @@ def copy_snippet_from_form(form, snippet=None):
     for field_name, clean_val in form.cleaned_data.items():
         setattr(snippet, field_name, clean_val)
 
-    current_user = User.get_current_user()
+    current_user = User.get_current()
     if not snippet.is_saved():
         snippet.creator = current_user
     snippet.modifier = current_user
@@ -78,7 +78,9 @@ def _reindex(request):
             code=s.code,
             language_id=s.language,
             language_readable=s.get_language(),
-            creator_email=s.creator.email
+            creator_email=s.creator.email,
+            created=s.created.date(),
+            modified=datetime.now().date(),
         ))
     i.add(docs)
 
@@ -171,6 +173,7 @@ class Home(SearchMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(Home, self).get_context_data(**kwargs)
         ctx['latest_snippets'] = CodeSnippet.all().order('modified').fetch(5)
+
         return ctx
 
 home = Home.as_view()
@@ -185,7 +188,7 @@ class SnippetDetail(TemplateView):
 
         ctx = super(SnippetDetail, self).get_context_data(**kwargs)
         ctx['snippet'] = code_snippet
-        ctx['comments'] = code_snippet.get_comments().fetch(5)
+        ctx['comments'] = code_snippet.comments.fetch(5)
         return ctx
 
 snippet_detail = SnippetDetail.as_view()
